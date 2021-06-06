@@ -59,11 +59,5 @@ namespace LinkShorter.Controllers
 
 		}
 
-		[HttpGet]
-		public ActionResult<string> Get(string url)
-		{
-			Console.WriteLine(url);
-			return Content("test get");
-		}
 	}
 }
