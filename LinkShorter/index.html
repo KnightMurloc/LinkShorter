@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <input id="input", type="text">
+    <button onclick="create()">создать</button>
+    <p id="result"></p>
+
+    <script>
+        let input = document.getElementById("input");
+		let result = document.getElementById("result");
+        let xhttp = new XMLHttpRequest();
+
+        xhttp.onreadystatechange = function () {
+            let responseText = xhttp.responseText;
+			result.textContent = responseText;
+            console.log(responseText);
+        }
+
+        function create() {
+			let res = input.value;
+			xhttp.open("POST", "http://localhost:5000/api/Create?url=" + res);
+			xhttp.send();
+        }
+    </script>
+</body>
+</html>
