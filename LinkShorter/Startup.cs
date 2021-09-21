@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using LinkShorter.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -31,6 +32,9 @@ namespace LinkShorter
 			services.AddControllers();
 
 			services.AddEntityFrameworkSqlite().AddDbContext<LinkContext>();
+			services.AddScoped<IRepositoryBase<Link>, LinkRepository>();
+
+			
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,6 +49,8 @@ namespace LinkShorter
 			app.UseRouting();
 
 			app.Map("/new", New);
+			app.Map("/notfound", NotFound);
+			app.Map("/remove", Remove);
 
 
 			app.UseEndpoints(endpoints =>
@@ -61,7 +67,7 @@ namespace LinkShorter
 				}
 				else
 				{
-					await context.Response.WriteAsync("not found");
+					await context.Response.WriteAsync(File.ReadAllText("view/notfound.html"));
 				}
 
 			});
@@ -72,7 +78,23 @@ namespace LinkShorter
 		{
 			app.Run(async (context) =>
 			{
-				await context.Response.WriteAsync(File.ReadAllText("index.html"));
+				await context.Response.WriteAsync(File.ReadAllText("view/index.html"));
+			});
+		}
+
+		public static void NotFound(IApplicationBuilder app)
+		{
+			app.Run(async (context) =>
+			{
+				await context.Response.WriteAsync(File.ReadAllText("view/notfound.html"));
+			});
+		}
+
+		public static void Remove(IApplicationBuilder app)
+		{
+			app.Run(async (context) =>
+			{
+				await context.Response.WriteAsync(File.ReadAllText("view/remove.html"));
 			});
 		}
 	}

@@ -5,8 +5,8 @@
     <title></title>
 </head>
 <body>
-    <input id="input", type="text">
-    <button onclick="create()">создать</button>
+    <input id="input" , type="text">
+    <button onclick="create()">удалить</button>
     <p id="result"></p>
 
     <script>
@@ -15,14 +15,20 @@
         let xhttp = new XMLHttpRequest();
 
         xhttp.onreadystatechange = function () {
-            let responseText = xhttp.responseText;
-			result.textContent = responseText;
-            console.log(responseText);
+            if (xhttp.status == 200) {
+                result.textContent = "удалено";
+                return;
+            }
+
+            if (xhttp.status == 404) {
+				result.textContent = "не найдено";
+				return;
+            }
         }
 
         function create() {
-			let res = input.value;
-			xhttp.open("POST", "http://localhost:5000/api/Create?url=" + res);
+			let id = input.value;
+			xhttp.open("DELETE", "/api/Create?id=" + id);
 			xhttp.send();
         }
     </script>

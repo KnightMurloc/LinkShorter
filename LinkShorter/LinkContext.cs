@@ -16,4 +16,5 @@ namespace LinkShorter
 			Database.EnsureCreated();
 		}
 	}
+
 }
